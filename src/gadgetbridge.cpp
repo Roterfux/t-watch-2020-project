@@ -10,16 +10,20 @@ unsigned long notify_id = 0;
 
 void process_gadgetbridge_notify() {
     notify_id = json["id"];
-    char format[512+3];
-    const char* src = json["src"]; // Debug sends "sender"
-    const char* title = json["title"]; // Debug sends "subject"
+    char format[1024];
+    const char* src = json["sender"]; // Debug sends "sender"
+    const char* title = json["subject"]; // Debug sends "subject"
     const char* body = json["body"];
+    Serial.printf("%s: %s\n\n%s", src, title, body);
+
     TTGOClass *ttgo = TTGOClass::getWatch();
 
-    snprintf(format, sizeof(format), "%s: %s\n\n%s", src, title, body);
+
+    snprintf(format, sizeof(format), "%s:\n%s\n\n%s", src, title, body);
     delete mbox;
     mbox = new MBox;
     mbox->create(format, [](lv_obj_t *obj, lv_event_t event) {
+    //mbox->create("%s: %s\n\n%s", src, title, body, [](lv_obj_t *obj, lv_event_t event) {
         if (event == LV_EVENT_VALUE_CHANGED) {
             delete mbox;
             mbox = nullptr;
@@ -37,10 +41,14 @@ void process_gadgetbridge_notify() {
     ttgo->motor->onec();
 }
 
+
+
+
 void process_gadgetbridge_json(const char* json_string) {
     deserializeJson(json, json_string);
-
+    
     const char* t = json["t"];
+    Serial.printf("Received: %s\n", t);
     if (!strcmp(t, "notify")) {
         process_gadgetbridge_notify();
     } else {

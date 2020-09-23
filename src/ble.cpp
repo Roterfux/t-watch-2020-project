@@ -139,7 +139,7 @@ class MyCallbacks : public BLECharacteristicCallbacks
         std::string rxValue = pCharacteristic->getValue();
 
         if (rxValue.length() > 0)
-        {
+        { 
             for (int i = 0; i < rxValue.length(); i++) {
                 if (rxValue[i] == 0x10) {
                     if (message.length()) {
@@ -170,6 +170,7 @@ class MyCallbacks : public BLECharacteristicCallbacks
 
 void processMessage() {
     // 6 characters: GB({})
+    Serial.printf("Message: %s\n", message.c_str());
     if (message.startsWith("GB(")) {
         Serial.printf("BLE GB JSON: %s\n", message.substring(3, message.length()-1).c_str());
         process_gadgetbridge_json(message.substring(3, message.length()-1).c_str());

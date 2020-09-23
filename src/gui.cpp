@@ -411,7 +411,7 @@ static void updateTime()
     localtime_r(&now, &info);
     strftime(buf, sizeof(buf), "%H:%M", &info);
     lv_label_set_text(timeLabel, buf);
-    lv_obj_align(timeLabel, NULL, LV_ALIGN_IN_TOP_MID, 0, 20);
+    lv_obj_align(timeLabel, NULL, LV_ALIGN_IN_TOP_MID, 0, 18);
 }
 
 void updateBatteryLevel()
