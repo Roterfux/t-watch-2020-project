@@ -137,6 +137,7 @@ class MyCallbacks : public BLECharacteristicCallbacks
     void onWrite(BLECharacteristic *pCharacteristic)
     {
         std::string rxValue = pCharacteristic->getValue();
+        Serial.printf("Message: %s\n", message.c_str());
 
         if (rxValue.length() > 0)
         { 
